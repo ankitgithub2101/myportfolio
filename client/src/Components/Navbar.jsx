@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import sleep from "../Utils/Sleep";
@@ -12,6 +12,28 @@ function Navbar({ children }) {
   const { user } = useSelector((state) => state.users);
 
   const dispatch = useDispatch();
+
+  const navRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        showNavbar &&
+        navRef.current &&
+        !navRef.current.contains(event.target)
+      ) {
+        setShowNavbar(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [showNavbar]);
 
   const userMenu = [
     {
@@ -70,7 +92,10 @@ function Navbar({ children }) {
 
   return (
     <>
-      <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
+      <nav
+        ref={navRef}
+        className="bg-white shadow-md fixed top-0 left-0 w-full z-50"
+      >
         <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
           <div className="text-2xl font-bold text-gray-800">Logo</div>
 
