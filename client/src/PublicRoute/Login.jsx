@@ -242,7 +242,7 @@ function Login() {
 
                 <div className="mt-10 flex flex-wrap items-center gap-4">
                   {/* Google Sign In */}
-                  <div className="w-full sm:w-auto">
+                  <div className="w-full sm:w-auto flex justify-center">
                     <GoogleLogin
                       onSuccess={handleGoogleSuccess}
                       onError={() => showToast("Google Login Failed")}
