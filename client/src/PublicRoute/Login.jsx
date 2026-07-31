@@ -61,7 +61,7 @@ function Login() {
 
     try {
       await sleep(1000); // 2 seconds
-      const res = await axios.post("/api/users/login", formData);
+      const res = await api.post("/api/users/login", formData);
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.data);
