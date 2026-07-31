@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import api from "../api/axios";
 import { useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from "../redux/usersSlice";
 import sleep from "../Utils/Sleep";
@@ -50,7 +51,7 @@ function Register() {
     }
 
     try {
-      const response = await axios.post("/api/users/register", formData);
+      const response = await api.post("/api/users/register", formData);
 
       if (response.data.success) {
         setSuccess(response.data.message);
