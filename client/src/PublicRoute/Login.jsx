@@ -240,31 +240,30 @@ function Login() {
                   Not your computer? Use Guest mode to sign in privately.
                 </p>
 
-                <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:justify-between sm:items-center">
-                  {/* Buttons */}
-                  <div className="order-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                    <GoogleLogin
-                      onSuccess={handleGoogleSuccess}
-                      onError={() => showToast("Google Login Failed")}
-                      useOneTap={false}
-                      use_fedcm_for_prompt={false}
-                    />
+                <div className="mt-10 flex flex-col gap-4">
+                  {/* Google Sign In */}
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={() => showToast("Google Login Failed")}
+                    useOneTap={false}
+                    use_fedcm_for_prompt={false}
+                  />
 
-                    <button
-                      onClick={handleNext}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-full transition shadow-sm"
-                    >
-                      Next
-                    </button>
-                  </div>
-
-                  {/* Create account */}
+                  {/* Create Account */}
                   <Link
                     to="/register"
-                    className="order-2 text-center sm:text-left text-blue-600 text-sm font-semibold hover:underline"
+                    className="text-blue-600 text-sm font-semibold hover:underline"
                   >
                     Create account
                   </Link>
+
+                  {/* Next Button */}
+                  <button
+                    onClick={handleNext}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-full transition shadow-sm w-fit"
+                  >
+                    Next
+                  </button>
                 </div>
               </>
             )}
