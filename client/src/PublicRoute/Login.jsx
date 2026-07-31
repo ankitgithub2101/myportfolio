@@ -240,7 +240,7 @@ function Login() {
                   Not your computer? Use Guest mode to sign in privately.
                 </p>
 
-                <div className="mt-10 flex flex-col gap-4">
+                <div className="mt-10 flex items-center justify-between gap-4 flex-wrap">
                   {/* Google Sign In */}
                   <GoogleLogin
                     onSuccess={handleGoogleSuccess}
@@ -252,7 +252,7 @@ function Login() {
                   {/* Create Account */}
                   <Link
                     to="/register"
-                    className="text-blue-600 text-sm font-semibold hover:underline"
+                    className="text-blue-600 text-sm font-semibold hover:underline whitespace-nowrap"
                   >
                     Create account
                   </Link>
@@ -260,7 +260,7 @@ function Login() {
                   {/* Next Button */}
                   <button
                     onClick={handleNext}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-full transition shadow-sm w-fit"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-full transition"
                   >
                     Next
                   </button>
