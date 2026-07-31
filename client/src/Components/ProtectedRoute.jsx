@@ -1,4 +1,3 @@
-// import { message } from "antd";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,13 +31,13 @@ function ProtectedRoute({ children }) {
         dispatch(SetUser(response.data.data));
       } else {
         localStorage.removeItem("token");
-        message.error(response.data.message);
+        console.error(response.data.message);
         navigate("/login");
       }
     } catch (error) {
       dispatch(HideLoading());
       localStorage.removeItem("token");
-      message.error(error.message);
+      console.error(error.message);
       navigate("/login");
     }
   };
