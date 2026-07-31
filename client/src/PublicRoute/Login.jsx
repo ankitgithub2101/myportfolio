@@ -240,19 +240,21 @@ function Login() {
                   Not your computer? Use Guest mode to sign in privately.
                 </p>
 
-                <div className="mt-10 flex items-center justify-between gap-4 flex-wrap">
+                <div className="mt-10 flex flex-wrap items-center gap-4">
                   {/* Google Sign In */}
-                  <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={() => showToast("Google Login Failed")}
-                    useOneTap={false}
-                    use_fedcm_for_prompt={false}
-                  />
+                  <div className="w-full sm:w-auto">
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={() => showToast("Google Login Failed")}
+                      useOneTap={false}
+                      use_fedcm_for_prompt={false}
+                    />
+                  </div>
 
                   {/* Create Account */}
                   <Link
                     to="/register"
-                    className="text-blue-600 text-sm font-semibold hover:underline whitespace-nowrap"
+                    className="text-blue-600 text-sm font-semibold hover:underline"
                   >
                     Create account
                   </Link>
