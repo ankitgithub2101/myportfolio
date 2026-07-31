@@ -262,7 +262,7 @@ function Login() {
                   {/* Next Button */}
                   <button
                     onClick={handleNext}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-full transition"
+                    className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-full transition"
                   >
                     Next
                   </button>
