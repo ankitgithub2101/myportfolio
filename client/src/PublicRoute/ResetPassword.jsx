@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import api from "../api/axios";
 
 function ResetPassword() {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ function ResetPassword() {
     }
 
     try {
-      const response = await axios.post("/api/users/reset-password", {
+      const response = await api.post("/api/users/reset-password", {
         email: formData.email,
         fav_food: formData.fav_food,
         newPassword: formData.newPassword,
