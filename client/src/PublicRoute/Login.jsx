@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import api from "../api/axios";
-import { GoogleLogin } from "@react-oauth/google";
+// import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from "../redux/usersSlice";
 import sleep from "../Utils/Sleep";
@@ -76,26 +77,53 @@ function Login() {
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse) => {
-    dispatch(ShowLoading("Signing in with Google..."));
+  // const handleGoogleSuccess = async (credentialResponse) => {
+  //   dispatch(ShowLoading("Signing in with Google..."));
 
-    try {
-      const res = await api.post("/api/users/google-login", {
-        token: credentialResponse.credential,
-      });
+  //   try {
+  //     const res = await api.post("/api/users/google-login", {
+  //       token: credentialResponse.credential,
+  //     });
 
-      if (res.data.success) {
-        localStorage.setItem("token", res.data.data);
-        navigate("/", { replace: true });
-      } else {
-        showToast(res.data.message);
+  //     if (res.data.success) {
+  //       localStorage.setItem("token", res.data.data);
+  //       navigate("/", { replace: true });
+  //     } else {
+  //       showToast(res.data.message);
+  //     }
+  //   } catch (error) {
+  //     showToast("Google Login Failed");
+  //   } finally {
+  //     dispatch(HideLoading());
+  //   }
+  // };
+
+  const googleLogin = useGoogleLogin({
+    flow: "auth-code", // or "implicit"
+    onSuccess: async (tokenResponse) => {
+      dispatch(ShowLoading("Signing in with Google..."));
+
+      try {
+        const res = await api.post("/api/users/google-login", {
+          token: tokenResponse.code || tokenResponse.access_token,
+        });
+
+        if (res.data.success) {
+          localStorage.setItem("token", res.data.data);
+          navigate("/", { replace: true });
+        } else {
+          showToast(res.data.message);
+        }
+      } catch (error) {
+        showToast("Google Login Failed");
+      } finally {
+        dispatch(HideLoading());
       }
-    } catch (error) {
+    },
+    onError: () => {
       showToast("Google Login Failed");
-    } finally {
-      dispatch(HideLoading());
-    }
-  };
+    },
+  });
 
   return (
     <>
@@ -242,13 +270,45 @@ function Login() {
 
                 <div className="mt-10 flex flex-wrap items-center gap-4">
                   {/* Google Sign In */}
-                  <div className="w-full sm:w-auto">
+                  {/* <div className="w-full sm:w-auto">
                     <GoogleLogin
                       onSuccess={handleGoogleSuccess}
                       onError={() => showToast("Google Login Failed")}
                       useOneTap={false}
                       use_fedcm_for_prompt={false}
                     />
+                  </div> */}
+
+                  <div className="w-full sm:w-auto">
+                    <button
+                      onClick={() => googleLogin()}
+                      className="
+      w-full
+      sm:w-auto
+      h-12
+      px-6
+      border
+      border-gray-300
+      rounded-lg
+      flex
+      items-center
+      justify-center
+      gap-3
+      bg-white
+      hover:bg-gray-50
+      transition
+    "
+                    >
+                      <img
+                        src="https://developers.google.com/identity/images/g-logo.png"
+                        alt="Google"
+                        className="w-5 h-5"
+                      />
+
+                      <span className="font-medium text-gray-700">
+                        Sign in with Google
+                      </span>
+                    </button>
                   </div>
 
                   {/* Create Account */}
