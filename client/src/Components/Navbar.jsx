@@ -71,6 +71,8 @@ function Navbar({ children }) {
   const currentPath = window.location.pathname;
 
   const handleNavigation = async (item) => {
+    // Close menu immediately
+    setShowNavbar(false);
     if (item.path === "/logout") {
       dispatch(ShowLoading("Logging out..."));
 
