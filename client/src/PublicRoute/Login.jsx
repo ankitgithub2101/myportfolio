@@ -240,7 +240,7 @@ function Login() {
                   Not your computer? Use Guest mode to sign in privately.
                 </p>
 
-                <div className="mt-10 flex flex-wrap items-center gap-4">
+                <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
                   {/* Google Sign In */}
                   <div className="w-full sm:w-auto flex justify-center">
                     <GoogleLogin
