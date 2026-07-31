@@ -113,19 +113,22 @@ function Login() {
         >
           <div
             className="
-            flex
-            items-center
-            gap-3
-            bg-red-500
-            text-white
-            px-6
-            py-3
-            rounded-xl
-            shadow-xl
-          
+              flex
+              items-center
+              gap-2
+              bg-red-500
+              text-white
+              text-sm
+              sm:text-base
+              px-4
+              sm:px-6
+              py-2
+              sm:py-3
+              rounded-xl
+              shadow-xl
             "
           >
-            <i className="bx bx-error-circle text-2xl"></i>
+            <i className="bx bx-error-circle text-xl sm:text-2xl"></i>
 
             <span className="font-medium">{toast.message}</span>
           </div>
