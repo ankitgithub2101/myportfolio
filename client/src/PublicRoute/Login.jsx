@@ -126,6 +126,7 @@ function Login() {
               sm:py-3
               rounded-xl
               shadow-xl
+              w-full
             "
           >
             <i className="bx bx-error-circle text-xl sm:text-2xl"></i>
