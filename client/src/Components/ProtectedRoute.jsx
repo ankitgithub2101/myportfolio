@@ -18,8 +18,10 @@ function ProtectedRoute({ children }) {
 
       // end point
       const response = await axios.post(
-        "/api/users/get-user-by-id",
-        {},
+        "https://myportfolio-2e8d.onrender.com/api/users/get-user-by-id",
+        {
+          userId: userId,
+        },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
