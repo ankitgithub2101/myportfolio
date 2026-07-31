@@ -104,34 +104,36 @@ function Login() {
       {toast.show && (
         <div
           className="
-          fixed
-          top-5
-          left-1/2
-          -translate-x-1/2
-          z-50
-          "
+      fixed
+      top-5
+      left-1/2
+      -translate-x-1/2
+      z-50
+      w-[calc(100%-2rem)]
+      sm:w-auto
+      sm:max-w-md
+    "
         >
           <div
             className="
-              flex
-              items-center
-              gap-2
-              bg-red-500
-              text-white
-              text-sm
-              sm:text-base
-              px-4
-              sm:px-6
-              py-2
-              sm:py-3
-              rounded-xl
-              shadow-xl
-              w-full
-            "
+        flex
+        items-center
+        gap-3
+        w-full
+        bg-red-500
+        text-white
+        px-4
+        sm:px-6
+        py-3
+        rounded-xl
+        shadow-xl
+      "
           >
             <i className="bx bx-error-circle text-xl sm:text-2xl"></i>
 
-            <span className="font-medium">{toast.message}</span>
+            <span className="text-sm sm:text-base font-medium">
+              {toast.message}
+            </span>
           </div>
         </div>
       )}
