@@ -253,7 +253,8 @@ function Login() {
                       onSuccess={handleGoogleSuccess}
                       onError={() => showToast("Google Login Failed")}
                       useOneTap={false}
-                      use_fedcm_for_prompt={false}
+                      // use_fedcm_for_prompt={false}
+                      prompt={login} // Forces the password screen every time.
                     />
                   </div>
 
