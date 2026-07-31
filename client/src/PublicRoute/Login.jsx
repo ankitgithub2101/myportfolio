@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import api from "../api/axios";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from "../redux/usersSlice";
@@ -79,7 +80,7 @@ function Login() {
     dispatch(ShowLoading("Signing in with Google..."));
 
     try {
-      const res = await axios.post("/api/users/google-login", {
+      const res = await api.post("/api/users/google-login", {
         token: credentialResponse.credential,
       });
 
