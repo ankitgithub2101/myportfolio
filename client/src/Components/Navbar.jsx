@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import sleep from "../Utils/Sleep";
 import { ShowLoading, HideLoading } from "../redux/usersSlice";
+import { googleLogout } from "@react-oauth/google";
 
 function Navbar({ children }) {
   const navigate = useNavigate();
@@ -71,25 +72,27 @@ function Navbar({ children }) {
   const currentPath = window.location.pathname;
 
   const handleNavigation = async (item) => {
-    // Close menu immediately
     setShowNavbar(false);
+
     if (item.path === "/logout") {
       dispatch(ShowLoading("Logging out..."));
 
       try {
+        // Logout from Google OAuth
+        googleLogout();
+
+        // Remove your app's JWT
         localStorage.removeItem("token");
 
-        await sleep(2000); // show loader for 2 seconds
+        await sleep(2000);
 
-        navigate("/login");
+        navigate("/login", { replace: true });
       } finally {
         dispatch(HideLoading());
       }
     } else {
       navigate(item.path);
     }
-
-    setShowNavbar(false);
   };
 
   return (
