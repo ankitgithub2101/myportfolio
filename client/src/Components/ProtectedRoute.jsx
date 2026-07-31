@@ -16,19 +16,18 @@ function ProtectedRoute({ children }) {
     try {
       dispatch(ShowLoading());
 
-      // end point
       const response = await axios.post(
         "https://myportfolio-2e8d.onrender.com/api/users/get-user-by-id",
-        {
-          userId: userId,
-        },
+        {}, // empty body
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         },
       );
+
       dispatch(HideLoading());
+
       if (response.data.success) {
         dispatch(SetUser(response.data.data));
       } else {
