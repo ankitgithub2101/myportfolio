@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import api from "../api/axios";
-// import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { ShowLoading, HideLoading } from "../redux/usersSlice";
 import sleep from "../Utils/Sleep";
@@ -77,37 +76,12 @@ function Login() {
     }
   };
 
-  // const handleGoogleSuccess = async (credentialResponse) => {
-  //   dispatch(ShowLoading("Signing in with Google..."));
+  const handleGoogleSuccess = async (credentialResponse) => {
+    dispatch(ShowLoading("Signing in with Google..."));
 
-  //   try {
-  //     const res = await api.post("/api/users/google-login", {
-  //       token: credentialResponse.credential,
-  //     });
-
-  //     if (res.data.success) {
-  //       localStorage.setItem("token", res.data.data);
-  //       navigate("/", { replace: true });
-  //     } else {
-  //       showToast(res.data.message);
-  //     }
-  //   } catch (error) {
-  //     showToast("Google Login Failed");
-  //   } finally {
-  //     dispatch(HideLoading());
-  //   }
-  // };
-
-  const googleLogin = useGoogleLogin({
-    flow: "auth-code",
-    ux_mode: "popup",
-    prompt: "login",
-
-    onSuccess: async (codeResponse) => {
-      console.log(codeResponse);
-
+    try {
       const res = await api.post("/api/users/google-login", {
-        code: codeResponse.code,
+        token: credentialResponse.credential,
       });
 
       if (res.data.success) {
@@ -116,12 +90,12 @@ function Login() {
       } else {
         showToast(res.data.message);
       }
-    },
-
-    onError: () => {
+    } catch (error) {
       showToast("Google Login Failed");
-    },
-  });
+    } finally {
+      dispatch(HideLoading());
+    }
+  };
 
   return (
     <>
@@ -275,15 +249,12 @@ function Login() {
                 <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
                   {/* Google Sign In */}
                   <div className="w-full sm:w-auto flex justify-center">
-                    {/* <GoogleLogin
+                    <GoogleLogin
                       onSuccess={handleGoogleSuccess}
                       onError={() => showToast("Google Login Failed")}
                       useOneTap={false}
                       use_fedcm_for_prompt={false}
-                    /> */}
-                    <button onClick={() => googleLogin()} className="...">
-                      Sign in with Google
-                    </button>
+                    />
                   </div>
 
                   {/* Create Account */}
