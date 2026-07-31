@@ -240,36 +240,9 @@ function Login() {
                   Not your computer? Use Guest mode to sign in privately.
                 </p>
 
-                <div
-                  className="
-                  flex
-                  flex-col
-                  lg:flex-row
-                  sm:justify-between
-                  sm:items-center
-                  gap-5
-                  mt-10
-                  "
-                >
-                  <Link
-                    to="/register"
-                    className="
-  text-blue-600
-  text-sm
-  font-semibold
-  hover:underline
-  whitespace-nowrap
-  "
-                  >
-                    Create account
-                  </Link>
-                  <div
-                    className="
-                    flex
-                    items-center
-                    gap-3
-                    "
-                  >
+                <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:justify-between sm:items-center">
+                  {/* Buttons */}
+                  <div className="order-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                     <GoogleLogin
                       onSuccess={handleGoogleSuccess}
                       onError={() => showToast("Google Login Failed")}
@@ -279,21 +252,19 @@ function Login() {
 
                     <button
                       onClick={handleNext}
-                      className="
-                      bg-blue-600
-                      hover:bg-blue-700
-                      text-white
-                      font-medium
-                      px-8
-                      py-3
-                      rounded-full
-                      transition
-                      shadow-sm
-                      "
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-full transition shadow-sm"
                     >
                       Next
                     </button>
                   </div>
+
+                  {/* Create account */}
+                  <Link
+                    to="/register"
+                    className="order-2 text-center sm:text-left text-blue-600 text-sm font-semibold hover:underline"
+                  >
+                    Create account
+                  </Link>
                 </div>
               </>
             )}
