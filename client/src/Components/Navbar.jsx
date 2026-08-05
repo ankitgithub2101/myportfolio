@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import sleep from "../Utils/Sleep";
-import { ShowLoading, HideLoading } from "../redux/usersSlice";
+import { ShowLoading, HideLoading, ClearUser } from "../redux/usersSlice";
 
 function Navbar({ children }) {
   const navigate = useNavigate();
@@ -77,6 +77,7 @@ function Navbar({ children }) {
       dispatch(ShowLoading("Logging out..."));
 
       try {
+        dispatch(ClearUser()); // Clear Redux immediately
         localStorage.removeItem("token");
 
         await sleep(2000); // show loader for 2 seconds
@@ -153,7 +154,7 @@ function Navbar({ children }) {
         </div>
       </nav>
 
-      <main className="pt-20">{children}</main>
+      <main>{children}</main>
     </>
   );
 }

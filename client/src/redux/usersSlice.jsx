@@ -14,6 +14,10 @@ const usersSlice = createSlice({
       state.user = action.payload;
     },
 
+    ClearUser: (state) => {
+      state.user = null;
+    },
+
     ShowLoading: (state, action) => {
       state.loading = true;
       state.loadingMessage = action.payload || "Please wait...";
@@ -26,6 +30,7 @@ const usersSlice = createSlice({
   },
 });
 
-export const { SetUser, ShowLoading, HideLoading } = usersSlice.actions;
+export const { SetUser, ClearUser, ShowLoading, HideLoading } =
+  usersSlice.actions;
 
 export default usersSlice.reducer;
