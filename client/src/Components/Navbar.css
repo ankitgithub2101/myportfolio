@@ -129,13 +129,13 @@
 
   .book-menu li {
     flex-shrink: 0;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 0 0 14px 14px;
   }
 
   .book-menu i {
-    font-size: 1.9rem;
+    font-size: 1.6rem;
   }
 
   .book-menu li:hover {
