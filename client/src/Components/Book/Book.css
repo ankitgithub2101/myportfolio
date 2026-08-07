@@ -371,6 +371,23 @@ html {
   }
 }
 
+.star {
+  animation: bob 1.4s ease-in-out infinite;
+  font-style: normal;
+  margin-top: 10px;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(2px);
+  }
+}
+
 /* ---- Hero ---- */
 .face--hero {
   background: linear-gradient(180deg, #131317, #0e0e11);
@@ -863,6 +880,10 @@ html {
   display: none;
 }
 
+.port-end {
+  margin-top: 20px;
+}
+
 /* .kicker {
   font-family: var(--display);
   font-size: 1rem;
@@ -1003,6 +1024,31 @@ html {
   .theme-toggle {
     background-color: transparent !important;
     backdrop-filter: unset;
+  }
+
+  .back-user {
+    margin-bottom: 10px;
+  }
+
+  .port-end {
+    margin-top: 20px;
+  }
+
+  .star {
+    animation: bob 1.4s ease-in-out infinite;
+    font-style: normal;
+    margin-top: 13px;
+  }
+
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(2px);
+    }
   }
 }
 

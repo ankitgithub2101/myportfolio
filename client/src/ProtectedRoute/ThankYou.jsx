@@ -6,7 +6,7 @@ function ThankYou() {
 
   return (
     <section className="face face--thankyou">
-      {user && <p className="kicker">{user.name}</p>}
+      {user && <p className="kicker back-user">{user.name}</p>}
 
       <h1 className="thankyou__title">
         THANK
@@ -16,17 +16,11 @@ function ThankYou() {
 
       <p className="thankyou__text">
         Thank you for taking the time to explore my creative journey.
-        <br />
-        Every project represents passion, learning, and dedication.
-        <br />
-        I am always excited to collaborate, build meaningful experiences,
-        <br />
-        and bring new ideas to life.
       </p>
 
       <div className="scroll-hint">
-        <span>End of Portfolio</span>
-        <i className="arrow">✦</i>
+        <span className="port-end">End of Portfolio</span>
+        <i className="star">✦</i>
       </div>
     </section>
   );
