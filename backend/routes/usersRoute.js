@@ -110,7 +110,7 @@ router.post("/login", async (req, res) => {
       },
       process.env.jwt_secret,
       {
-        expiresIn: "20s",
+        expiresIn: "1d",
       },
     );
 
@@ -178,7 +178,7 @@ router.post("/google-login", async (req, res) => {
       process.env.jwt_secret,
 
       {
-        expiresIn: "20s",
+        expiresIn: "1d",
       },
     );
 
