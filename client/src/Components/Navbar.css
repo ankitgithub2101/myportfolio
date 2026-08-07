@@ -1,0 +1,164 @@
+.book-navbar {
+  position: fixed;
+  top: 50%;
+  left: 0px;
+  transform: translateY(-50%);
+  width: 75px;
+  padding: 18px 10px;
+  background: rgba(22, 22, 26, 0.65);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    inset 0 0 20px rgba(255, 255, 255, 0.03);
+  z-index: 300;
+  transition: width 0.3s ease;
+}
+
+.book-navbar {
+  animation: navFloat 0.6s ease forwards;
+}
+
+@keyframes navFloat {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.book-menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+.book-menu li {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  color: #9a9aa6;
+  cursor: pointer;
+  position: relative;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.book-menu i {
+  font-size: 1.35rem;
+}
+
+/* hover */
+.book-menu li:hover {
+  color: white;
+
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.35),
+    rgba(196, 181, 253, 0.15)
+  );
+
+  transform: translateX(5px);
+}
+
+/* active */
+.book-menu li.active {
+  color: white;
+  background: linear-gradient(135deg, #7c3aed, #c4b5fd);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.45);
+}
+
+.book-menu span {
+  display: none;
+}
+
+/* user badge */
+.book-user {
+  margin-top: 20px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.7rem;
+}
+
+.book-user strong {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .book-navbar {
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 70px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    background: rgba(22, 22, 26, 0.75);
+    backdrop-filter: blur(18px);
+  }
+
+  .book-menu {
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    overflow-x: auto;
+    max-width: 90vw;
+  }
+
+  .book-menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .book-menu li {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 0 0 14px 14px;
+  }
+
+  .book-menu i {
+    font-size: 1.15rem;
+  }
+
+  .book-menu li:hover {
+    transform: translateY(-3px);
+  }
+
+  .book-user {
+    display: none;
+  }
+
+  .book-navbar {
+    animation: navMobile 0.6s ease forwards;
+  }
+
+  @keyframes navMobile {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+}

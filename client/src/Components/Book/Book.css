@@ -1,0 +1,1007 @@
+/* ============================================================
+   STUDIO NOVA — Portfolio Book
+   Modern / bold theme + 3D scroll-driven book
+   ============================================================ */
+
+:root {
+  --bg: #0d0d0f;
+  --panel: #16161a;
+  --panel-2: #1d1d23;
+  --ink: #f4f4f5;
+  --muted: #9a9aa6;
+  --line: #2a2a31;
+  --accent: #7c3aed;
+  --accent-2: #c4b5fd;
+  --display: "Space Grotesk", system-ui, sans-serif;
+  --body: "Inter", system-ui, sans-serif;
+  --pw: 480px;
+  --ph: 510px;
+  --book-scale: 1;
+}
+
+.book-wrapper *,
+.book-wrapper *::before,
+.book-wrapper *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+.book-wrapper {
+  background: var(--bg);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.book-wrapper a {
+  color: inherit;
+}
+
+/* ---------- Top progress bar ---------- */
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--line);
+  z-index: 100;
+}
+.progress__bar {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform-origin: left;
+}
+
+/* ---------- Theme toggle (fixed, outside the book) ---------- */
+.theme-toggle {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  backdrop-filter: blur(12px);
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.theme-toggle i {
+  font-size: 1.4rem;
+}
+
+.theme-toggle:hover {
+  transform: rotate(20deg) scale(1.1);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ---------- Light theme (class on <html>) ---------- */
+.light {
+  --bg: #f3f3f6;
+  --panel: #ffffff;
+  --panel-2: #f0f0f4;
+  --ink: #15151a;
+  --muted: #5d5d68;
+  --line: #e4e4ec;
+  --accent: #6d28d9;
+  --accent-2: #7c3aed;
+}
+.light .scene {
+  background: radial-gradient(120% 80% at 50% 30%, #ffffff 0%, var(--bg) 70%);
+}
+.light .book {
+  filter: drop-shadow(0 30px 50px rgba(25, 20, 55, 0.18));
+}
+.light .page--left-base .page__inner--spine {
+  background: linear-gradient(90deg, #d7d7e2 0%, #ececf2 14%, #f7f7fb 100%);
+}
+.light .leaf__face {
+  box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.05);
+}
+.light .leaf__face--front::after {
+  background: linear-gradient(90deg, rgba(40, 30, 70, 0.14), transparent);
+}
+.light .leaf__face--back::after {
+  background: linear-gradient(270deg, rgba(40, 30, 70, 0.14), transparent);
+}
+.light .face--hero {
+  background: linear-gradient(180deg, #ffffff, #f4f4f8);
+}
+.light .face--projects {
+  background: #f6f6fa;
+}
+.light .face--projects-intro,
+.light .face--contact-intro,
+.light .face--about,
+.light .face--services,
+.light .face--experience,
+.light .face--testimonials {
+  background: #f7f7fb;
+}
+.light .face--awards {
+  background: linear-gradient(180deg, #fbfaff, #f2f1fa);
+}
+.light .face--contact-form {
+  background: linear-gradient(180deg, #f7f4ff, #f2f2f8);
+}
+/* Cover keeps its bold violet gradient + white text in both themes. */
+
+/* ============================================================
+   SCENE + BOOK (3D)
+   ============================================================ */
+.scene {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  perspective: 2200px;
+  background: radial-gradient(120% 80% at 50% 30%, #18181d 0%, var(--bg) 70%);
+  overflow: hidden;
+}
+
+.book {
+  position: relative;
+  width: calc(var(--pw) * 2);
+  height: var(--ph);
+  transform-style: preserve-3d;
+  transform: scale(var(--book-scale));
+  filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.55));
+  transform-origin: center center;
+}
+
+.book {
+  overflow: visible;
+}
+
+.project__meta small {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  margin-top: 6px;
+}
+
+/* Pages share the right or left half of the spread */
+.page,
+.leaf {
+  position: absolute;
+  top: 0;
+  width: var(--pw);
+  height: var(--ph);
+}
+
+/* Static halves */
+.page--left-base {
+  left: 0;
+}
+.page--right-base {
+  left: var(--pw);
+  z-index: 0;
+}
+
+.page--left-base .page__inner--spine {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #000 0%, #131317 14%, #0c0c0f 100%);
+  border-radius: 10px 0 0 10px;
+}
+
+/* ---------- Leaves: the flipping pages ---------- */
+.leaf {
+  left: var(--pw); /* hinge on the spine (center) */
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.leaf__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  border-radius: 0 10px 10px 0;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.leaf__face {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02)),
+    url("/paper-texture.png");
+
+  background-size: cover;
+}
+.leaf__face--back {
+  transform: rotateY(180deg);
+  border-radius: 10px 0 0 10px;
+}
+
+/* page-edge stacking shadow near the spine */
+.leaf__face::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  pointer-events: none;
+}
+.leaf__face--front::after {
+  left: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent);
+}
+.leaf__face--back::after {
+  right: 0;
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.35), transparent);
+}
+
+.light .face--cover {
+  background: linear-gradient(180deg, #ffffff, #ececf5);
+
+  color: #15151a;
+}
+
+.light .cover__role {
+  color: rgba(21, 21, 26, 0.75);
+}
+
+.light .scroll-hint {
+  color: rgba(21, 21, 26, 0.65);
+}
+/* dimming overlay driven by JS during the flip (physical lighting) */
+.leaf__shade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ============================================================
+   FACE CONTENT (shared)
+   ============================================================ */
+.face {
+  width: 100%;
+  height: 100%;
+  padding: clamp(28px, 4vw, 52px);
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.face::-webkit-scrollbar {
+  width: 0.1px;
+}
+
+.face::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.face::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 20px;
+}
+
+.face__title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0.25em 0;
+}
+.face__body {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 34ch;
+}
+.face__footer {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ---- Cover ---- */
+.face--cover {
+  background: radial-gradient(
+    120% 120% at 100% 0%,
+    #804ff3 0%,
+    #5a329a 40%,
+    #210960 100%
+  );
+  justify-content: space-between;
+}
+.cover__name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(3rem, 7vw, 4rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+.cover__role {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.05rem;
+}
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--display);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.light .face--thankyou .scroll-hint .arrow {
+  color: #5d5d68;
+}
+.scroll-hint .arrow {
+  animation: bob 1.4s ease-in-out infinite;
+  font-style: normal;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* ---- Hero ---- */
+.face--hero {
+  background: linear-gradient(180deg, #131317, #0e0e11);
+  justify-content: center;
+}
+.hero__title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4.6vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5em;
+}
+.hero__title em {
+  color: var(--accent-2);
+  font-style: normal;
+}
+.hero__lead {
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 36ch;
+}
+
+/* ---- About ---- */
+.skill-list {
+  list-style: none;
+  margin-top: 28px;
+  display: grid;
+  gap: 10px;
+}
+.skill-list li {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  padding: 12px 16px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+/* ---- Projects intro / contact intro (centered statements) ---- */
+.face--projects-intro,
+.face--contact-intro {
+  justify-content: center;
+}
+
+/* ---- Projects grid ---- */
+.face--projects {
+  background: #0f0f13;
+}
+.projects {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  flex: 1;
+  align-content: center;
+  margin-bottom: 10px;
+}
+.project {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 14px;
+  padding: 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+.project:hover {
+  transform: translateY(-4px);
+  border-color: var(--c);
+}
+.project__thumb {
+  display: block;
+  height: 92px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--c), #0b0b0e);
+}
+.project__meta {
+  display: flex;
+  flex-direction: column;
+}
+.project__meta strong {
+  font-family: var(--display);
+  font-size: 1.1rem;
+}
+.project__meta em {
+  color: var(--muted);
+  font-style: normal;
+  font-size: 0.85rem;
+}
+
+/* ---- Services ---- */
+.services {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+  flex: 1;
+  align-content: center;
+  margin-bottom: 10px;
+}
+.service {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 14px;
+  row-gap: 2px;
+  padding: 11px 16px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition:
+    border-color 0.25s,
+    transform 0.25s;
+}
+.service:hover {
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+.service__no {
+  grid-row: 1 / span 2;
+  align-self: center;
+  font-family: var(--display);
+  color: var(--accent-2);
+  font-size: 1.1rem;
+}
+.service strong {
+  font-family: var(--display);
+  font-size: 1.1rem;
+}
+.service em {
+  color: var(--muted);
+  font-style: normal;
+  font-size: 0.9rem;
+}
+
+/* ---- Experience / Timeline ---- */
+.timeline {
+  list-style: none;
+  margin-top: 24px;
+  display: grid;
+  gap: 0;
+  flex: 1;
+  align-content: center;
+}
+.timeline li {
+  position: relative;
+  padding: 14px 0 14px 26px;
+  border-left: 2px solid var(--line);
+}
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 20px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.18);
+}
+.timeline__year {
+  display: block;
+  font-family: var(--display);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-2);
+  margin-bottom: 2px;
+}
+.timeline strong {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  padding: 0 10px 0 0;
+}
+.timeline em {
+  color: var(--muted);
+  font-style: normal;
+  font-size: 0.9rem;
+}
+
+/* ---- Awards & Stats ---- */
+.face--awards {
+  background: linear-gradient(180deg, #131019, #0e0e11);
+}
+.stats {
+  margin: 10px 0 10px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.stat {
+  padding: 16px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.stat b {
+  display: block;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stat span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.awards {
+  list-style: none;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 8px;
+}
+.awards li {
+  font-family: var(--display);
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.awards li::before {
+  content: "★ ";
+  color: var(--accent-2);
+}
+
+/* ---- Testimonials ---- */
+.face--testimonials {
+  background: #0f0f13;
+}
+.quote {
+  margin: 16px 0 0;
+  padding: 16px 18px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 10px;
+}
+.quote blockquote {
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+.quote figcaption {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 0.85rem;
+}
+.quote figcaption strong {
+  font-family: var(--display);
+}
+.quote figcaption em {
+  color: var(--muted);
+  font-style: normal;
+}
+
+/* ---- Contact form (right base page) ---- */
+.face--contact-form {
+  background: linear-gradient(180deg, #15131f, #0e0e11);
+}
+.contact-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+.contact-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-family: var(--display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.contact-form input,
+.contact-form textarea {
+  font-family: var(--body);
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--accent);
+}
+.btn {
+  justify-self: start;
+  cursor: pointer;
+  border: none;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1rem;
+  color: #fff;
+  background: var(--accent);
+  padding: 12px 22px;
+  border-radius: 999px;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+.btn:hover {
+  transform: translateX(3px);
+  background: #6d28d9;
+}
+.socials {
+  display: flex;
+  gap: 14px;
+}
+.socials a {
+  transition: color 0.2s;
+}
+.socials a:hover {
+  color: var(--accent-2);
+}
+
+.contact-options {
+  margin-top: 25px;
+  display: grid;
+  gap: 12px;
+}
+
+.contact-card {
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+}
+
+.contact-card span {
+  color: var(--accent-2);
+  font-family: var(--display);
+  font-size: 0.8rem;
+}
+
+.contact-card strong {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--display);
+  font-size: 1.1rem;
+}
+
+.contact-card p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---- Skills ---- */
+
+.face--skills {
+  background: var(--panel);
+}
+
+.skills {
+  margin-top: 25px;
+  display: grid;
+  gap: 12px;
+}
+
+.skill {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 14px 16px;
+
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.skill:hover {
+  transform: translateX(5px);
+  border-color: var(--accent);
+}
+
+.skill__icon {
+  font-size: 1.8rem;
+}
+
+.skill strong {
+  display: block;
+  font-family: var(--display);
+  font-size: 1.1rem;
+}
+
+.skill small {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.face--thankyou {
+  background: radial-gradient(
+    120% 120% at 100% 0%,
+    #8b5cf6 0%,
+    #5b21b6 45%,
+    #1b0f3a 100%
+  );
+
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.thankyou__title {
+  font-family: var(--display);
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 0.9;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: white;
+}
+
+.thankyou__text {
+  margin-top: 30px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* LIGHT MODE */
+.light .face--thankyou {
+  background: radial-gradient(
+    120% 120% at 100% 0%,
+    #ffffff 0%,
+    #ede9fe 45%,
+    #ddd6fe 100%
+  );
+}
+
+.light .thankyou__title {
+  color: #15151a;
+}
+
+.light .thankyou__text {
+  color: rgba(21, 21, 26, 0.7);
+}
+
+.light .face--thankyou .scroll-hint {
+  color: #5d5d68;
+}
+
+/* hint under the book */
+.scene__hint {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--display);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--muted);
+  transition: opacity 0.4s;
+}
+
+.page--left-base {
+  z-index: 0;
+}
+
+.page--right-base {
+  z-index: 0;
+}
+
+.leaf:first-of-type {
+  z-index: 30;
+}
+
+.desktop-book {
+  display: block;
+}
+
+.mobile-book {
+  display: none;
+}
+
+/* .kicker {
+  font-family: var(--display);
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+} */
+
+/* ============================================================
+   MOBILE (≤ 768px wide): the book becomes a SINGLE page that still
+   flips on scroll — each face is collapsed into a full-screen page
+   (see the matchMedia block in js/main.js).
+   ============================================================ */
+@media screen and (max-width: 768px) {
+  :root {
+    --pw: min(92vw, 420px);
+    --ph: min(85vh, 560px);
+  }
+  .scene {
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .book {
+    transform-style: preserve-3d;
+  }
+
+  .page,
+  .leaf {
+    width: var(--pw);
+    height: var(--ph);
+  }
+
+  .leaf {
+    left: 0;
+    transform-origin: center center;
+    transform: none !important;
+    position: absolute;
+    inset: 0;
+  }
+
+  .face {
+    padding: 25px;
+  }
+
+  .cover__name {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .cover__role {
+    font-size: 0.85rem;
+  }
+
+  .projects {
+    grid-template-columns: 1fr;
+  }
+
+  .skills,
+  .services {
+    gap: 8px;
+  }
+
+  .leaf__face--front,
+  .leaf__face--back {
+    width: 100%;
+    height: 100%;
+  }
+
+  .leaf__face--back {
+    transform: rotateY(180deg);
+  }
+
+  .face--cover {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .leaf__face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .leaf__face--back {
+    transform: rotateY(180deg);
+  }
+
+  .book {
+    width: var(--pw);
+    height: var(--ph);
+    position: relative;
+  }
+
+  .leaf__face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transform: none !important;
+  }
+
+  .desktop-book {
+    display: none;
+  }
+
+  .mobile-book {
+    display: block;
+    position: relative;
+    width: var(--pw);
+    height: var(--ph);
+  }
+
+  .mobile-page {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+  }
+
+  .mobile-page:first-child {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 10;
+  }
+
+  .theme-toggle {
+    background-color: transparent !important;
+    backdrop-filter: unset;
+  }
+}
+
+/* Reduced motion: keep things calm */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint .arrow {
+    animation: none;
+  }
+}

@@ -1,160 +1,223 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+
+gsap.registerPlugin(ScrollToPlugin);
+
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import sleep from "../Utils/Sleep";
 import { ShowLoading, HideLoading, ClearUser } from "../redux/usersSlice";
 
+import ThemeToggle from "./Book/ThemeToggle";
+import "./Navbar.css";
+
 function Navbar({ children }) {
   const navigate = useNavigate();
-
-  const [showNavbar, setShowNavbar] = useState(false);
+  const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.users);
 
-  const dispatch = useDispatch();
+  const [active, setActive] = useState("home");
 
-  const navRef = useRef(null);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(false);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        showNavbar &&
-        navRef.current &&
-        !navRef.current.contains(event.target)
-      ) {
-        setShowNavbar(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
-    };
-  }, [showNavbar]);
-
-  const userMenu = [
+  const menu = [
     {
       name: "Home",
       icon: "bx bx-home-alt-2",
-      path: "/",
+      path: "home",
     },
+
     {
       name: "About",
       icon: "bx bx-user",
-      path: "/about",
+      path: "about",
     },
+
+    {
+      name: "Experience",
+      icon: "bx bx-time-five",
+      path: "experience",
+    },
+
+    {
+      name: "Projects",
+      icon: "bx bx-briefcase",
+      path: "projects",
+    },
+
+    {
+      name: "Services",
+      icon: "bx bx-code-alt",
+      path: "services",
+    },
+
+    {
+      name: "Contact",
+      icon: "bx bx-envelope",
+      path: "contact",
+    },
+
     {
       name: "Logout",
       icon: "bx bx-log-out-circle",
-      path: "/logout",
+      path: "logout",
     },
   ];
 
-  const adminMenu = [
-    {
-      name: "Home",
-      icon: "bx bx-home-alt-2",
-      path: "/",
-    },
-    {
-      name: "Logout",
-      icon: "bx bx-log-out-circle",
-      path: "/logout",
-    },
-  ];
+  // sync with book scroll
+  useEffect(() => {
+    const isMobile = window.matchMedia("(max-width:768px)").matches;
 
-  const menuToBeRendered = user?.isAdmin ? adminMenu : userMenu;
+    const pageMap = isMobile
+      ? {
+          0: "home",
+          1: "about",
+          3: "experience",
+          4: "projects",
+          5: "services",
+          8: "contact",
+          9: "thankyou",
+        }
+      : {
+          0: "home",
+          1: "about",
+          3: "experience",
+          4: "projects",
+          5: "services",
+          8: "contact",
+        };
 
-  const currentPath = window.location.pathname;
-
-  const handleNavigation = async (item) => {
-    // Close menu immediately
-    setShowNavbar(false);
-    if (item.path === "/logout") {
-      dispatch(ShowLoading("Logging out..."));
-
-      try {
-        dispatch(ClearUser()); // Clear Redux immediately
-        localStorage.removeItem("token");
-
-        await sleep(2000); // show loader for 2 seconds
-
-        navigate("/login");
-      } finally {
-        dispatch(HideLoading());
+    const updateActive = (e) => {
+      if (isAutoScrolling) {
+        return;
       }
-    } else {
-      navigate(item.path);
+      const page = e.detail;
+
+      if (pageMap[page]) {
+        setActive(pageMap[page]);
+      }
+    };
+
+    window.addEventListener("bookPageChange", updateActive);
+
+    return () => {
+      window.removeEventListener("bookPageChange", updateActive);
+    };
+  }, [isAutoScrolling]);
+
+  const handleLogout = async () => {
+    dispatch(ShowLoading("Logging out..."));
+
+    try {
+      dispatch(ClearUser());
+
+      localStorage.removeItem("token");
+
+      await sleep(1000);
+
+      navigate("/login");
+    } finally {
+      dispatch(HideLoading());
+    }
+  };
+
+  const handleNavigation = (item) => {
+    if (item.path === "logout") {
+      handleLogout();
+      return;
     }
 
-    setShowNavbar(false);
+    const isMobile = window.matchMedia("(max-width:768px)").matches;
+
+    setActive(item.path);
+
+    let scrollY = 0;
+
+    if (isMobile) {
+      const mobilePages = {
+        home: 0,
+        about: 1,
+        experience: 3,
+        projects: 4,
+        services: 5,
+        contact: 8,
+      };
+
+      const trigger = window.bookTrigger;
+
+      if (!trigger) {
+        console.log("Book trigger not ready");
+        return;
+      }
+
+      const page = mobilePages[item.path];
+
+      const progress = page / 9;
+
+      scrollY = trigger.start + (trigger.end - trigger.start) * progress;
+    } else {
+      const desktopPages = {
+        home: 0,
+        about: 1,
+        experience: 2,
+        projects: 2.4,
+        services: 3.2,
+        contact: 4.4,
+      };
+
+      const page = desktopPages[item.path];
+
+      scrollY = window.innerHeight * page;
+    }
+
+    setIsAutoScrolling(true);
+
+    gsap.to(window, {
+      scrollTo: {
+        y: scrollY,
+      },
+
+      duration: 0.8,
+
+      ease: "power2.inOut",
+
+      onComplete: () => {
+        setTimeout(() => {
+          setIsAutoScrolling(false);
+        }, 200);
+      },
+    });
   };
 
   return (
     <>
-      <nav
-        ref={navRef}
-        className="bg-white shadow-md fixed top-0 left-0 w-full z-50"
-      >
-        <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold text-gray-800">Logo</div>
+      <aside className="book-navbar">
+        <ul className="book-menu">
+          {menu.map((item, index) => (
+            <li
+              key={index}
+              onClick={() => handleNavigation(item)}
+              className={active === item.path ? "active" : ""}
+            >
+              <i className={item.icon}></i>
 
-          <button
-            onClick={() => setShowNavbar(!showNavbar)}
-            className="md:hidden"
-          >
-            <i
-              className={
-                showNavbar
-                  ? "bx bx-x text-4xl text-gray-600"
-                  : "bx bx-menu-alt-right text-4xl text-gray-600"
-              }
-            ></i>
-          </button>
+              <span>{item.name}</span>
+            </li>
+          ))}
+          <ThemeToggle />
+        </ul>
 
-          <div
-            className={`
-              absolute md:static
-              top-full left-0
-              w-full md:w-auto
-              bg-white md:bg-transparent
-              shadow-md md:shadow-none
-              transition-all duration-300
-              ${showNavbar ? "block" : "hidden md:block"}
-            `}
-          >
-            <ul className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8 p-5 md:p-0">
-              {menuToBeRendered.map((item, index) => (
-                <li
-                  key={index}
-                  onClick={() => handleNavigation(item)}
-                  className={`
-                    flex items-center gap-2
-                    cursor-pointer
-                    px-3 py-2
-                    rounded-lg
-                    transition
-
-                    ${
-                      item.path === currentPath
-                        ? "bg-blue-100 text-blue-600"
-                        : "text-gray-700 hover:bg-gray-100"
-                    }
-                  `}
-                >
-                  <i className={`${item.icon} text-xl`}></i>
-                  <span className="font-medium">{item.name}</span>
-                </li>
-              ))}
-            </ul>
+        {user && (
+          <div className="book-user">
+            <strong>{user.name}</strong>
           </div>
-        </div>
-      </nav>
+        )}
+      </aside>
 
-      <main>{children}</main>
+      <main className="book-content">{children}</main>
     </>
   );
 }

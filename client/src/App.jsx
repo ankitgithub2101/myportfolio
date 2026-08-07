@@ -2,12 +2,14 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./ProtectedRoute/Home";
+import About from "./ProtectedRoute/About";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import PublicRoute from "./Components/PublicRoute";
 import Login from "./PublicRoute/Login";
 import Register from "./PublicRoute/Register";
 import ResetPassword from "./PublicRoute/ResetPassword";
 import Loader from "./Components/Loader";
+import Book from "./Components/Book/Book";
 import { useSelector } from "react-redux";
 function App() {
   const { loading } = useSelector((state) => state.users);
@@ -20,7 +22,7 @@ function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <Home />
+                <Book />
               </ProtectedRoute>
             }
           />
