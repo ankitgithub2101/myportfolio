@@ -887,8 +887,8 @@ html {
    ============================================================ */
 @media screen and (max-width: 768px) {
   :root {
-    --pw: min(92vw, 420px);
-    --ph: min(85vh, 560px);
+    --pw: min(93vw, 420px);
+    --ph: min(90vh, 730px);
   }
   .scene {
     width: 100%;
@@ -919,6 +919,7 @@ html {
 
   .face {
     padding: 25px;
+    border-radius: 0 0 20px 20px;
   }
 
   .cover__name {
