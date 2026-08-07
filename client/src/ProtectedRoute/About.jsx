@@ -20,7 +20,7 @@ function About() {
               1500,
             ]}
             wrapper="span"
-            speed={30}
+            speed={50}
             repeat={Infinity}
           />
         </span>
