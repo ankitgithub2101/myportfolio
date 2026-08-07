@@ -17,6 +17,7 @@ function Book() {
   const sceneRef = useRef(null);
   const bookRef = useRef(null);
   const hintRef = useRef(null);
+  const progressRef = useRef(null);
 
   useEffect(() => {
     const cleanup = initBookAnimation({
@@ -25,14 +26,36 @@ function Book() {
       hint: hintRef.current,
     });
 
-    return cleanup;
+    const handleProgress = (e) => {
+      if (!progressRef.current) return;
+
+      const value = e.detail * 100;
+
+      if (window.matchMedia("(max-width:768px)").matches) {
+        // mobile horizontal
+        progressRef.current.style.width = `${value}%`;
+        progressRef.current.style.height = "100%";
+      } else {
+        // desktop vertical
+        progressRef.current.style.height = `${value}%`;
+        progressRef.current.style.width = "100%";
+      }
+    };
+
+    window.addEventListener("bookProgress", handleProgress);
+
+    return () => {
+      cleanup?.();
+
+      window.removeEventListener("bookProgress", handleProgress);
+    };
   }, []);
 
   return (
     <>
       {/* Progress Bar */}
-      <div className="progress" aria-hidden="true">
-        <span className="progress__bar"></span>
+      <div className="progress">
+        <span className="progress__bar" ref={progressRef} />
       </div>
 
       <div className="book-wrapper">

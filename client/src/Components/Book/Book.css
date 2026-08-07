@@ -40,19 +40,26 @@ html {
 }
 
 /* ---------- Top progress bar ---------- */
+/* ---------- Vertical Progress Bar ---------- */
+
 .progress {
   position: fixed;
-  inset: 0 0 auto 0;
-  height: 3px;
+  top: 0;
+  left: 75px; /* change to left:20px if you want left side */
+  width: 3px;
+  height: 100vh;
   background: var(--line);
   z-index: 100;
+  overflow: hidden;
 }
+
 .progress__bar {
   display: block;
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  transform-origin: left;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  transform-origin: top;
+  transition: height 0.1s linear;
 }
 
 /* ---------- Theme toggle (fixed, outside the book) ---------- */
@@ -1062,6 +1069,22 @@ html {
     50% {
       transform: translateY(2px);
     }
+  }
+
+  .progress {
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--line);
+  }
+
+  .progress__bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform-origin: left;
   }
 }
 

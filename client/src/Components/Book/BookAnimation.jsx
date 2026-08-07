@@ -29,11 +29,8 @@ function initDesktopBook(scene, book, hint) {
   leaves.forEach((leaf, index) => {
     gsap.set(leaf, {
       rotationY: 0,
-
       transformOrigin: "left center",
-
       transformStyle: "preserve-3d",
-
       zIndex: N - index + 20,
     });
 
@@ -82,12 +79,22 @@ function initDesktopBook(scene, book, hint) {
     scrub: 0.1,
 
     onUpdate(self) {
+      // Book flip
       applyFlip(self.progress);
 
+      // Progress bar update
+      window.dispatchEvent(
+        new CustomEvent("bookProgress", {
+          detail: self.progress,
+        }),
+      );
+
+      // Hide hint
       if (hint) {
         hint.style.opacity = self.progress > 0.02 ? "0" : "1";
       }
 
+      // Current page
       const totalPages = N * 2;
 
       const currentPage = Math.min(
@@ -136,8 +143,6 @@ function initMobileBook(scene, book, hint) {
   let activePage = -1;
 
   function updatePages(progress) {
-    const visiblePages = total - 1; // hide ThankYou
-
     const current = Math.min(total - 1, Math.round(progress * (total - 1)));
 
     if (current === activePage) return;
@@ -148,31 +153,49 @@ function initMobileBook(scene, book, hint) {
       if (index === current) {
         gsap.to(page, {
           opacity: 1,
+
           xPercent: 0,
+
           scale: 1,
+
           duration: 0.35,
+
           ease: "power3.out",
+
           overwrite: true,
+
           zIndex: 10,
         });
       } else if (index < current) {
         gsap.to(page, {
           opacity: 0,
+
           xPercent: -100,
+
           scale: 0.96,
+
           duration: 0.35,
+
           ease: "power2.out",
+
           overwrite: true,
+
           zIndex: 1,
         });
       } else {
         gsap.to(page, {
           opacity: 0,
+
           xPercent: 100,
+
           scale: 0.96,
+
           duration: 0.35,
+
           ease: "power2.out",
+
           overwrite: true,
+
           zIndex: 1,
         });
       }
@@ -184,6 +207,7 @@ function initMobileBook(scene, book, hint) {
       }),
     );
   }
+
   const trigger = ScrollTrigger.create({
     trigger: scene,
 
@@ -198,13 +222,19 @@ function initMobileBook(scene, book, hint) {
     onUpdate(self) {
       updatePages(self.progress);
 
+      // Progress bar update
+      window.dispatchEvent(
+        new CustomEvent("bookProgress", {
+          detail: self.progress,
+        }),
+      );
+
       if (hint) {
         hint.style.opacity = self.progress > 0.02 ? "0" : "1";
       }
     },
   });
 
-  // IMPORTANT
   window.bookTrigger = trigger;
 
   return () => {
