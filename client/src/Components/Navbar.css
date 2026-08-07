@@ -102,7 +102,7 @@
 
 @media (max-width: 768px) {
   .book-navbar {
-    top: 5px;
+    top: 7px;
     left: 50%;
     transform: translateX(-50%);
     width: auto;
