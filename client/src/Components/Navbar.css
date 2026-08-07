@@ -117,7 +117,7 @@
 
   .book-menu {
     flex-direction: row;
-    gap: 25px;
+    gap: 20px;
     align-items: center;
     overflow-x: auto;
     max-width: 90vw;
