@@ -739,24 +739,23 @@ html {
 
 .skills {
   margin-top: 25px;
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
 .skill {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-
+  flex: 0 0 calc(50% - 6px); /* 2 items per row */
+  gap: 10px;
   padding: 14px 16px;
-
   background: var(--panel-2);
   border: 1px solid var(--line);
   border-radius: 14px;
-
   transition:
     transform 0.25s ease,
     border-color 0.25s ease;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .skill:hover {

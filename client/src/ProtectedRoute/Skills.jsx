@@ -57,10 +57,10 @@ function Skills() {
             </div>
           </div>
         ))}
-        <div className="face__footer">
-          <span>02 Services</span>
-          <span>Scroll Up/Down →</span>
-        </div>
+      </div>
+      <div className="face__footer">
+        <span>02 Services</span>
+        <span>Scroll Up/Down →</span>
       </div>
     </section>
   );
