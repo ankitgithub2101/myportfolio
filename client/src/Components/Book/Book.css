@@ -888,7 +888,7 @@ html {
 @media screen and (max-width: 768px) {
   :root {
     --pw: min(93vw, 420px);
-    --ph: min(90vh, 700px);
+    --ph: min(90vh, 620px);
   }
   .scene {
     width: 100%;
