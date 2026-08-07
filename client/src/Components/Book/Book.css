@@ -873,6 +873,13 @@ html {
   margin-bottom: 10px;
 } */
 
+@media screen and (max-width: 1024px) {
+  :root {
+    --pw: min(90vw, 400px);
+    --ph: min(80vh, 560px);
+  }
+}
+
 /* ============================================================
    MOBILE (≤ 768px wide): the book becomes a SINGLE page that still
    flips on scroll — each face is collapsed into a full-screen page
