@@ -65,6 +65,8 @@ function Login() {
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.data);
+        // 30min expiry
+        localStorage.setItem("tokenExpiry", Date.now() + 30 * 60 * 1000); //30min
         navigate("/", { replace: true });
       } else {
         showToast(res.data.message);
@@ -86,6 +88,10 @@ function Login() {
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.data);
+
+        // 30min expiry
+        localStorage.setItem("tokenExpiry", Date.now() + 30 * 60 * 1000); //30min
+
         navigate("/", { replace: true });
       } else {
         showToast(res.data.message);
