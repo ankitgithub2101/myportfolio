@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import authMiddleware from "../middlewares/authMiddleware.js";
 import { OAuth2Client } from "google-auth-library";
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 
@@ -286,4 +287,70 @@ router.post("/reset-password", async (req, res) => {
   }
 });
 
+// ================= CONTACT FORM =================
+
+router.post("/contact", async (req, res) => {
+  try {
+    const { name, email, mobile, msg } = req.body;
+
+    if (!name || !email || !mobile || !msg) {
+      return res.send({
+        message: "All fields are required",
+        success: false,
+        data: null,
+      });
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER,
+      to: process.env.GMAIL_USER,
+      replyTo: email,
+      subject: "New Contact Form Inquiry",
+
+      text: `
+New Contact Form Inquiry
+
+Name: ${name}
+Email: ${email}
+Mobile: ${mobile}
+
+Message:
+${msg}
+      `,
+
+      html: `
+        <h2>New Contact Form Inquiry</h2>
+
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mobile:</strong> ${mobile}</p>
+
+        <h3>Message:</h3>
+        <p>${msg.replace(/\n/g, "<br>")}</p>
+      `,
+    });
+
+    res.send({
+      message: "Message sent successfully!",
+      success: true,
+      data: null,
+    });
+  } catch (error) {
+    console.error("Contact form error:", error);
+
+    res.status(500).send({
+      message: error.message,
+      success: false,
+      data: null,
+    });
+  }
+});
 export default router;

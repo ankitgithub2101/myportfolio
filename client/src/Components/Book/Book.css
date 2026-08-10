@@ -1,8 +1,8 @@
 /* ============================================================
-   STUDIO NOVA — Portfolio Book
-   Modern / bold theme + 3D scroll-driven book
+   Portfolio Book
+   3D scroll-driven book
    ============================================================ */
-
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 :root {
   --bg: #0d0d0f;
   --panel: #16161a;
@@ -45,7 +45,7 @@ html {
 .progress {
   position: fixed;
   top: 0;
-  left: 75px; /* change to left:20px if you want left side */
+  left: 75px;
   width: 3px;
   height: 100vh;
   background: var(--line);
@@ -202,10 +202,11 @@ html {
 
 /* ---------- Leaves: the flipping pages ---------- */
 .leaf {
-  left: var(--pw); /* hinge on the spine (center) */
+  left: var(--pw);
   transform-origin: left center;
   transform-style: preserve-3d;
   will-change: transform;
+  pointer-events: none;
 }
 
 .leaf__face {
@@ -220,6 +221,7 @@ html {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  pointer-events: auto;
 }
 
 .leaf__face {
@@ -312,9 +314,8 @@ html {
 }
 .face__body {
   color: var(--muted);
-  font-size: 1.05rem;
+  font-size: 1rem;
   line-height: 1.6;
-  max-width: 34ch;
 }
 .face__footer {
   margin-top: auto;
@@ -453,54 +454,166 @@ html {
 .face--contact-intro {
   justify-content: center;
 }
+/* ============================================================
+   PROJECT STACK SLIDER
+   ============================================================ */
 
-/* ---- Projects grid ---- */
-.face--projects {
-  background: #0f0f13;
+.project-slider {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  touch-action: pan-y;
+  margin-top: 10px;
 }
-.projects {
-  margin-top: 22px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  flex: 1;
-  align-content: center;
-  margin-bottom: 10px;
+
+/* Active card wrapper */
+.project-slider-card {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.project {
+
+.project-slider-card:active {
+  cursor: grabbing;
+}
+
+/* Actual project card */
+.project-slider-card .project {
+  width: 100%;
+  /* min-height: 250px; */
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   border-radius: 14px;
   padding: 12px;
   background: var(--panel-2);
-  border: 1px solid var(--line);
-  transition:
-    transform 0.25s ease,
-    border-color 0.25s ease;
+  border: 1px solid var(--c);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  pointer-events: auto;
 }
-.project:hover {
-  transform: translateY(-4px);
-  border-color: var(--c);
+
+/* Back stack cards */
+.project-stack-card {
+  position: absolute;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border: 1px solid;
+  border-radius: 14px;
+  background: var(--panel-2);
+  pointer-events: none;
 }
-.project__thumb {
+
+.project-stack-card--1 {
+  z-index: 2;
+  transform: translateY(8px) scale(0.96);
+  opacity: 0.7;
+}
+
+.project-stack-card--2 {
+  z-index: 1;
+  transform: translateY(16px) scale(0.92);
+  opacity: 0.4;
+}
+
+/* Project image/thumb */
+.project-slider-card .project__thumb {
   display: block;
-  height: 92px;
+  width: 100%;
+  height: 60px;
+  flex-shrink: 0;
   border-radius: 10px;
   background: linear-gradient(135deg, var(--c), #0b0b0e);
 }
-.project__meta {
+
+/* Project text */
+.project-slider-card .project__meta {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
-.project__meta strong {
+
+.project-slider-card .project__meta strong {
   font-family: var(--display);
   font-size: 1.1rem;
+  margin-top: 2px;
 }
-.project__meta em {
+
+.project-slider-card .project__meta em {
   color: var(--muted);
   font-style: normal;
-  font-size: 0.85rem;
+  font-size: 1rem;
+}
+
+.project-slider-card .project__meta small {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-top: 6px;
+}
+
+/* ============================================================
+   SLIDER CONTROLS
+   ============================================================ */
+
+.project-slider-controls {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 22px;
+
+  margin: 6px 0 10px;
+}
+
+.project-slider-button {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--panel-2);
+  color: var(--ink);
+  font-size: 18px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.project-slider-button:hover {
+  /* transform: scale(1.08); */
+  border-color: var(--accent);
+  background: var(--panel);
+}
+
+.project-slider-counter {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.project-slider-counter strong {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1rem;
 }
 
 /* ---- Services ---- */
@@ -590,10 +703,6 @@ html {
   font-size: 0.9rem;
 }
 
-/* ---- Awards & Stats ---- */
-.face--awards {
-  background: linear-gradient(180deg, #131019, #0e0e11);
-}
 .stats {
   margin: 10px 0 10px 0;
   display: grid;
@@ -639,10 +748,6 @@ html {
   color: var(--accent-2);
 }
 
-/* ---- Testimonials ---- */
-.face--testimonials {
-  background: #0f0f13;
-}
 .quote {
   margin: 16px 0 0;
   padding: 16px 18px;
@@ -671,10 +776,6 @@ html {
   font-style: normal;
 }
 
-/* ---- Contact form (right base page) ---- */
-.face--contact-form {
-  background: linear-gradient(180deg, #15131f, #0e0e11);
-}
 .contact-form {
   display: grid;
   gap: 12px;
@@ -722,7 +823,7 @@ html {
     background 0.2s;
 }
 .btn:hover {
-  transform: translateX(3px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.15);
   background: #6d28d9;
 }
 .socials {
@@ -796,7 +897,7 @@ html {
 }
 
 .skill:hover {
-  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.15);
   border-color: var(--accent);
 }
 
@@ -904,14 +1005,69 @@ html {
   margin-top: 20px;
 }
 
-/* .kicker {
+.kicker {
   font-family: var(--display);
   font-size: 1rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--accent-2);
   margin-bottom: 10px;
-} */
+  font-weight: 700;
+}
+
+/* ---------- About Contact Info ---------- */
+.connect-title {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  margin: 22px 0 0;
+  color: var(--ink);
+}
+.contact-info {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+  margin-bottom: 10px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.contact-item:hover {
+  transform: translateX(4px);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.contact-item i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(124, 58, 237, 0.12);
+  color: var(--accent-2);
+  font-size: 1.2rem;
+}
+
+.contact-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 @media screen and (max-width: 1024px) {
   :root {
@@ -970,8 +1126,8 @@ html {
     font-size: 0.85rem;
   }
 
-  .projects {
-    grid-template-columns: 1fr;
+  .project {
+    flex: 100%;
   }
 
   .skills,
@@ -1085,6 +1241,51 @@ html {
     height: 100%;
     background: linear-gradient(90deg, var(--accent), var(--accent-2));
     transform-origin: left;
+  }
+
+  .project-slider {
+    min-height: 270px;
+
+    margin-top: 18px;
+
+    touch-action: pan-y;
+
+    overflow: visible;
+  }
+
+  .project-slider-card {
+    touch-action: pan-y;
+  }
+
+  .project-slider-card .project {
+    min-height: 235px;
+
+    padding: 11px;
+  }
+
+  .project-slider-card .project__thumb {
+    height: 75px;
+  }
+
+  .project-slider-card .project__meta strong {
+    font-size: 1rem;
+  }
+
+  .project-slider-card .project__meta em {
+    font-size: 0.78rem;
+  }
+
+  .project-slider-card .project__meta small {
+    font-size: 0.7rem;
+  }
+
+  .project-slider-controls {
+    margin-top: 12px;
+  }
+
+  .project-slider-button {
+    width: 36px;
+    height: 36px;
   }
 }
 

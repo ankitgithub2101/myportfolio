@@ -25,9 +25,9 @@ function Services() {
 
   return (
     <section className="face face--services">
-      <p className="kicker">What I Offer</p>
+      <p className="kicker"> Services — 5</p>
 
-      <h1 className="face__title">Services</h1>
+      <h1 className="face__title">What I Offer</h1>
 
       <p className="face__body">
         Helping businesses build a powerful digital presence through
@@ -44,11 +44,6 @@ function Services() {
             <em>{service.description}</em>
           </article>
         ))}
-      </div>
-
-      <div className="face__footer">
-        <span>05 Services</span>
-        <span>Scroll Up/Down →</span>
       </div>
     </section>
   );

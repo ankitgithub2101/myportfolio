@@ -37,9 +37,9 @@ function Skills() {
 
   return (
     <section className="face face--skills">
-      <p className="kicker">Skills</p>
+      <p className="kicker">Skills — 2</p>
 
-      <h2 className="face__title">My Technical Expertise</h2>
+      <h2 className="face__title">My Expertise</h2>
 
       <p className="face__body">
         Technologies I use to build modern, scalable and responsive web
@@ -57,10 +57,6 @@ function Skills() {
             </div>
           </div>
         ))}
-      </div>
-      <div className="face__footer">
-        <span>02 Services</span>
-        <span>Scroll Up/Down →</span>
       </div>
     </section>
   );

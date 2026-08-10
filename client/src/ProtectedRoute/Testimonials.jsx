@@ -15,11 +15,9 @@ function Testimonials() {
 
   return (
     <section className="face face--testimonials">
-      <p className="kicker">Testimonials</p>
+      <p className="kicker">Testimonials — 7</p>
 
-      <h1 className="face__title">
-        Client <br /> Words
-      </h1>
+      <h1 className="face__title">Client Words</h1>
 
       {reviews.map((item, index) => (
         <figure className="quote" key={index}>
@@ -30,11 +28,6 @@ function Testimonials() {
           </figcaption>
         </figure>
       ))}
-
-      <div className="face__footer">
-        <span>07 Testimonials</span>
-        <span>Scroll Up/Down →</span>
-      </div>
     </section>
   );
 }
