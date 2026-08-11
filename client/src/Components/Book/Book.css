@@ -224,13 +224,6 @@ html {
   pointer-events: auto;
 }
 
-.leaf__face {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02)),
-    url("/paper-texture.png");
-
-  background-size: cover;
-}
 .leaf__face--back {
   transform: rotateY(180deg);
   border-radius: 10px 0 0 10px;
