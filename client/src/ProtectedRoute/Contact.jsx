@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import api from "../api/axios";
 import Swal from "sweetalert2";
 
 function Contact() {
-  const dispatch = useDispatch();
-
-  // Contact form data
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,7 +10,6 @@ function Contact() {
     msg: "",
   });
 
-  // Custom loader
   const [loading, setLoading] = useState(false);
 
   // Handle input changes
@@ -29,15 +24,13 @@ function Contact() {
 
   // Email validation
   const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[a-zA-Z0-9.]+(?:.[a-zA-Z]{2,})+$/;
-
+    const emailRegex = /^[^\s@]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   };
 
   // Mobile validation
   const validateMobile = (mobile) => {
     const mobileRegex = /^[0-9]{10}$/;
-
     return mobileRegex.test(mobile);
   };
 
@@ -84,16 +77,17 @@ function Contact() {
     setLoading(true);
 
     try {
-      // =====================================================
-      // USING AXIOS
-      // =====================================================
-
       const res = await api.post("/api/users/contact", formData);
 
       const data = res.data;
 
       if (data.success) {
-        showToast("Message sent successfully!", "success");
+        await Swal.fire({
+          icon: "success",
+          title: "Message Sent!",
+          text: "Message sent successfully. I will get back to you soon.",
+          confirmButtonText: "OK",
+        });
 
         setFormData({
           name: "",
@@ -102,50 +96,13 @@ function Contact() {
           msg: "",
         });
       } else {
-        showToast(data.message || "Failed to send message.");
+        Swal.fire({
+          icon: "error",
+          title: "Failed!",
+          text: data.message || "Failed to send message.",
+          confirmButtonText: "OK",
+        });
       }
-
-      // =====================================================
-      // OLD FETCH VERSION
-      // =====================================================
-
-      // const response = await fetch("http://localhost:5000/api/users/contact", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     name: formData.name,
-      //     email: formData.email,
-      //     mobile: formData.mobile,
-      //     msg: formData.msg,
-      //   }),
-      // });
-
-      // const data = await response.json();
-
-      // if (data.success) {
-      //   Swal.fire({
-      //     icon: "success",
-      //     title: "Message Sent!",
-      //     text: "Message sent successfully. I will get back to you soon.",
-      //     confirmButtonText: "OK",
-      //   });
-
-      //   setFormData({
-      //     name: "",
-      //     email: "",
-      //     mobile: "",
-      //     msg: "",
-      //   });
-      // } else {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Failed!",
-      //     text: data.message || "Failed to send message.",
-      //     confirmButtonText: "OK",
-      //   });
-      // }
     } catch (error) {
       console.error("Contact form error:", error);
 
@@ -185,19 +142,20 @@ function Contact() {
               borderRadius: "50%",
               animation: "contactLoaderSpin 0.8s linear infinite",
             }}
-          ></div>
+          />
 
           <style>
             {`
-        @keyframes contactLoaderSpin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}
+              @keyframes contactLoaderSpin {
+                from {
+                  transform: rotate(0deg);
+                }
+
+                to {
+                  transform: rotate(360deg);
+                }
+              }
+            `}
           </style>
         </div>
       )}
@@ -215,6 +173,7 @@ function Contact() {
               name="name"
               value={formData.name}
               onChange={handleChange}
+              disabled={loading}
             />
           </label>
 
@@ -225,6 +184,7 @@ function Contact() {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              disabled={loading}
             />
           </label>
 
@@ -235,7 +195,9 @@ function Contact() {
               name="mobile"
               value={formData.mobile}
               onChange={handleChange}
-              maxLength="10"
+              maxLength={10}
+              inputMode="numeric"
+              disabled={loading}
             />
           </label>
 
@@ -246,7 +208,8 @@ function Contact() {
               name="msg"
               value={formData.msg}
               onChange={handleChange}
-            ></textarea>
+              disabled={loading}
+            />
           </label>
 
           <button className="btn" type="submit" disabled={loading}>
