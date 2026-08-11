@@ -815,7 +815,7 @@ html {
   color: var(--accent-2);
 }
 ::placeholder {
-  color: var(--accent-2);
+  color: var(--muted);
 }
 .contact-form input:focus,
 .contact-form textarea:focus {

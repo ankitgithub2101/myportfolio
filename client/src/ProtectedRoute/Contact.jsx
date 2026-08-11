@@ -175,7 +175,7 @@ function Contact() {
                 value={formData.name}
                 onChange={handleChange}
                 disabled={loading}
-                placeholder="Enter your name"
+                placeholder="Enter Name"
               />
             </label>
 
