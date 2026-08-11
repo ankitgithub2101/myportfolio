@@ -467,7 +467,6 @@ html {
   justify-content: center;
   overflow: visible;
   touch-action: pan-y;
-  margin-top: 10px;
 }
 
 /* Active card wrapper */
