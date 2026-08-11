@@ -90,12 +90,12 @@ function Awards() {
 
   const stats = [
     {
-      number: 20,
+      number: 15,
       suffix: "+",
       label: "Web Projects",
     },
     {
-      number: 5,
+      number: 3,
       suffix: "+",
       label: "Years Experience",
     },

@@ -39,7 +39,7 @@ function Projects() {
       type: "MERN Stack • Auth • OTP",
       color: "#f59e0b",
       description:
-        "Document-sharing platform featuring authentication, secure password recovery via email OTP powered by Resend, and protective responses for invalid credentials.",
+        "Document-storing platform with secure authentication, email OTP-based password recovery powered by Resend, and dummy data for invalid users to enhance security and prevent user enumeration.",
       link: "https://foggcomputing.netlify.app",
       deployment: "Netlify",
     },
