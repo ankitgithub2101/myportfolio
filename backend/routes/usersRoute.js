@@ -294,7 +294,7 @@ router.post("/contact", async (req, res) => {
     const { name, email, mobile, msg } = req.body;
 
     if (!name || !email || !mobile || !msg) {
-      return res.send({
+      return res.status(400).json({
         message: "All fields are required",
         success: false,
         data: null,
@@ -302,7 +302,9 @@ router.post("/contact", async (req, res) => {
     }
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS,
@@ -328,17 +330,15 @@ ${msg}
 
       html: `
         <h2>New Contact Form Inquiry</h2>
-
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Mobile:</strong> ${mobile}</p>
-
         <h3>Message:</h3>
         <p>${msg.replace(/\n/g, "<br>")}</p>
       `,
     });
 
-    res.send({
+    return res.status(200).json({
       message: "Message sent successfully!",
       success: true,
       data: null,
@@ -346,7 +346,7 @@ ${msg}
   } catch (error) {
     console.error("Contact form error:", error);
 
-    res.status(500).send({
+    return res.status(500).json({
       message: error.message,
       success: false,
       data: null,
