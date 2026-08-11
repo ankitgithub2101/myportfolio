@@ -166,51 +166,59 @@ function Contact() {
         <h1 className="face__title">Get In Touch</h1>
 
         <form className="contact-form" onSubmit={handleSubmit}>
-          <label>
-            Name
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </label>
+          <div className="contact-form-row">
+            <label>
+              <span>Name</span>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                disabled={loading}
+                placeholder="Enter your name"
+              />
+            </label>
 
-          <label>
-            Email
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </label>
+            <label>
+              <span>Email</span>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                disabled={loading}
+                placeholder="Email Id"
+              />
+            </label>
+          </div>
 
-          <label>
-            Mobile
-            <input
-              type="tel"
-              name="mobile"
-              value={formData.mobile}
-              onChange={handleChange}
-              maxLength={10}
-              inputMode="numeric"
-              disabled={loading}
-            />
-          </label>
+          <div className="contact-form-row contact-form-row--single">
+            <label>
+              <span>Mobile</span>
+              <input
+                type="tel"
+                name="mobile"
+                value={formData.mobile}
+                onChange={handleChange}
+                maxLength={10}
+                inputMode="numeric"
+                disabled={loading}
+                placeholder="Mobile Number"
+              />
+            </label>
 
-          <label>
-            Message
-            <textarea
-              rows="4"
-              name="msg"
-              value={formData.msg}
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </label>
+            <label>
+              <span>Message</span>
+              <textarea
+                rows="4"
+                name="msg"
+                value={formData.msg}
+                onChange={handleChange}
+                disabled={loading}
+                placeholder="write something..."
+              />
+            </label>
+          </div>
 
           <button className="btn" type="submit" disabled={loading}>
             {loading ? "Sending..." : "Send Message"}

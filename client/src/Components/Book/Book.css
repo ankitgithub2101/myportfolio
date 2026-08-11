@@ -780,15 +780,30 @@ html {
   gap: 12px;
   margin-top: 18px;
 }
-.contact-form label {
+
+.contact-form-row {
   display: grid;
-  gap: 6px;
-  font-size: 0.8rem;
-  color: var(--muted);
-  font-family: var(--display);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  width: 100%;
 }
+
+.contact-form-row label {
+  min-width: 0;
+}
+
+.contact-form-row input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.contact-form-row label span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--ink);
+}
+
 .contact-form input,
 .contact-form textarea {
   font-family: var(--body);
@@ -797,14 +812,25 @@ html {
   background: var(--panel-2);
   border: 1px solid var(--line);
   border-radius: 10px;
-  padding: 8px 14px;
+  padding: 8px 10px;
   resize: none;
   outline: none;
   transition: border-color 0.2s;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  color: var(--accent-2);
+}
+::placeholder {
+  color: var(--accent-2);
 }
 .contact-form input:focus,
 .contact-form textarea:focus {
   border-color: var(--accent);
+}
+
+.contact-form-row--single {
+  grid-template-columns: 1fr;
 }
 .btn {
   justify-self: start;
@@ -1285,6 +1311,10 @@ html {
   .project-slider-button {
     width: 36px;
     height: 36px;
+  }
+
+  .contact-form-row {
+    grid-template-columns: 1fr;
   }
 }
 

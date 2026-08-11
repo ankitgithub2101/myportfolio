@@ -9,7 +9,7 @@ function Testimonials() {
     },
     {
       text: "Explained development concepts clearly and practically.",
-      name: "Student",
+      name: "Students",
     },
   ];
 
