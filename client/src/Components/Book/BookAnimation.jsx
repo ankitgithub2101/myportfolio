@@ -48,14 +48,65 @@ function initDesktopBook(scene, book, hint) {
       const leaf = leaves[i];
 
       const start = i / N;
-
       const end = (i + 1) / N;
 
       const local = clamp((progress - start) / (end - start));
 
+      const front = leaf.querySelector(".leaf__face--front");
+      const back = leaf.querySelector(".leaf__face--back");
+
+      // Flip the page
       gsap.set(leaf, {
         rotateY: -180 * local,
       });
+
+      /*
+       * =====================================================
+       * IMPORTANT:
+       * Only ONE side of the leaf is allowed to receive
+       * mouse/touch/keyboard interaction.
+       * =====================================================
+       */
+
+      if (local < 0.5) {
+        // FRONT = active
+        if (front) {
+          front.style.pointerEvents = "auto";
+          front.style.visibility = "visible";
+          front.inert = false;
+          front.setAttribute("aria-hidden", "false");
+        }
+
+        // BACK = completely disabled
+        if (back) {
+          back.style.pointerEvents = "none";
+          back.style.visibility = "hidden";
+          back.inert = true;
+          back.setAttribute("aria-hidden", "true");
+        }
+      } else {
+        // FRONT = completely disabled
+        if (front) {
+          front.style.pointerEvents = "none";
+          front.style.visibility = "hidden";
+          front.inert = true;
+          front.setAttribute("aria-hidden", "true");
+        }
+
+        // BACK = active
+        if (back) {
+          back.style.pointerEvents = "auto";
+          back.style.visibility = "visible";
+          back.inert = false;
+          back.setAttribute("aria-hidden", "false");
+        }
+      }
+
+      /*
+       * =====================================================
+       * Z-INDEX
+       * =====================================================
+       */
 
       if (local <= 0) {
         leaf.style.zIndex = N - i + 20;
