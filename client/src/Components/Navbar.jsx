@@ -114,9 +114,12 @@ function Navbar({ children }) {
 
     if (!token) return;
 
-    const timer = setTimeout(() => {
-      handleLogout();
-    }, 60 * 1000);
+    const timer = setTimeout(
+      () => {
+        handleLogout();
+      },
+      30 * 60 * 1000,
+    ); // 30Min
 
     return () => {
       clearTimeout(timer);
