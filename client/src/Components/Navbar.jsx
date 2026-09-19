@@ -108,6 +108,21 @@ function Navbar({ children }) {
     };
   }, [isAutoScrolling]);
 
+  // Auto logout after 1 minute
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    const timer = setTimeout(() => {
+      handleLogout();
+    }, 60 * 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   const handleLogout = async () => {
     dispatch(ShowLoading("Logging out..."));
 
@@ -115,6 +130,7 @@ function Navbar({ children }) {
       dispatch(ClearUser());
 
       localStorage.removeItem("token");
+      localStorage.removeItem("loginTime");
 
       await sleep(1000);
 

@@ -5,6 +5,16 @@ import "../Components/Book/Book.css";
 function Projects() {
   const projects = [
     {
+      title: "Game Era",
+      type: "HTML + CSS + JavaScript + TailwindCss",
+      color: "#b721ff",
+      description:
+        "Gaming Era is a responsive gaming website built with HTML, CSS, JavaScript, and Tailwind CSS. It features a modern gaming-focused UI. The project is deployed on GitHub Pages.",
+      link: "https://ankitgithub2101.github.io/web-designing-tailwindCss/",
+      deployment: "Hostinger",
+    },
+
+    {
       title: "Jas Global Exim",
       type: "PHP + HTML + CSS + JavaScript + SEO",
       color: "#7c3aed",
